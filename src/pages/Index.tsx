@@ -1,12 +1,13 @@
 import React from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import FeatureList from '../components/FeaturePanel/FeatureList';
+import { motion } from 'framer-motion';
 
 /**
  * The main page component for the Feature Panel UI application.
  * 
  * This page demonstrates the primary layout, consisting of a sidebar that contains the
- * feature panel and a main content area.
+ * feature panel and a main content area. Both sections are now animated on load.
  */
 const IndexPage: React.FC = () => {
   return (
@@ -18,13 +19,18 @@ const IndexPage: React.FC = () => {
       <Sidebar>
         {/* 
           The FeatureList component is the core of the feature panel, rendering the list
-          of individual features.
+          of individual features with a staggered animation.
         */}
         <FeatureList />
       </Sidebar>
 
-      {/* A placeholder for the main content area to illustrate the full page layout */}
-      <main className="flex-1 p-6 md:p-10">
+      {/* The main content area, now animated to fade in after the sidebar. */}
+      <motion.main
+        className="flex-1 p-6 md:p-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
         <div className="flex h-full items-center justify-center rounded-lg border-2 border-dashed border-border bg-card">
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight text-primary-foreground">
@@ -35,7 +41,7 @@ const IndexPage: React.FC = () => {
             </p>
           </div>
         </div>
-      </main>
+      </motion.main>
     </div>
   );
 };
