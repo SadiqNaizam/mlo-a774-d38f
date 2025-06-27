@@ -1,46 +1,32 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { Home, Settings, Users } from "lucide-react";
+import { Button } from "../ui/button";
 
-/**
- * Props for the Sidebar component.
- * Extends standard HTML aside attributes.
- */
-interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
-  /**
-   * The content to be displayed within the sidebar.
-   */
-  children: React.ReactNode;
-}
-
-/**
- * A reusable Sidebar layout component for the Feature Panel UI.
- * It provides a consistent container for sidebar content, adhering to the
- * project's layout and styling requirements. It is designed to be responsive,
- * hiding on smaller screens by default.
- */
-const Sidebar: React.FC<SidebarProps> = ({ children, className, ...props }) => {
+export function Sidebar() {
   return (
-    <aside
-      className={cn(
-        // Responsive visibility: hidden on small screens, flex on medium and up.
-        "hidden md:flex flex-col",
-        // Sizing from layout requirements.
-        "w-64", 
-        // Style for a full-height sidebar.
-        "h-screen",
-        // Theming from tailwind config.
-        "bg-background", 
-        // A border to separate from main content.
-        "border-r border-border",
-        // Padding for the content within the sidebar.
-        "p-4",
-        className
-      )}
-      {...props}
+    <motion.aside
+      initial={{ x: "-100%" }}
+      animate={{ x: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="w-64 bg-card border-r p-4 flex-col h-screen fixed hidden lg:flex"
     >
-      {children}
-    </aside>
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold">Dashboard</h2>
+      </div>
+      <nav className="flex flex-col space-y-2">
+        <Button variant="ghost" className="justify-start">
+          <Home className="mr-2 h-4 w-4" />
+          Home
+        </Button>
+        <Button variant="ghost" className="justify-start">
+          <Users className="mr-2 h-4 w-4" />
+          Users
+        </Button>
+        <Button variant="ghost" className="justify-start">
+          <Settings className="mr-2 h-4 w-4" />
+          Settings
+        </Button>
+      </nav>
+    </motion.aside>
   );
-};
-
-export default Sidebar;
+}
