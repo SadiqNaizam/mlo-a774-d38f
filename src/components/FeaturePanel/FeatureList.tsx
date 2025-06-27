@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { CodeXml, Database, Globe, Sidebar } from 'lucide-react';
 import FeatureItem from './FeatureItem';
+import { motion } from 'framer-motion';
 
 /**
  * Type definition for a single feature.
@@ -48,19 +49,40 @@ interface FeatureListProps {
 }
 
 /**
+ * Animation variants for the list container.
+ * This orchestrates the staggered animation of its children.
+ */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1, // 100ms delay between each child animating in
+      delayChildren: 0.2, // Delay before starting the first child animation
+    }
+  }
+};
+
+/**
  * A component that renders a vertical list of features.
- * It uses the FeatureItem component to display each feature.
+ * It uses the FeatureItem component to display each feature and animates
+ * the list on load.
  */
 const FeatureList: React.FC<FeatureListProps> = ({ className }) => {
   return (
-    // Layout based on requirements: flex-col, items-start, gap-4, py-2
-    <div className={cn("flex flex-col items-start gap-4 py-2", className)}>
+    // This motion.div controls the staggered animation for the FeatureItems.
+    <motion.div
+      className={cn("flex flex-col items-start gap-4 py-2", className)}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {featuresData.map((feature) => (
         <FeatureItem key={feature.id} icon={feature.icon}>
           {feature.text}
         </FeatureItem>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
