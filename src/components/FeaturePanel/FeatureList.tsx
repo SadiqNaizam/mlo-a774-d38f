@@ -1,89 +1,53 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { CodeXml, Database, Globe, Sidebar } from 'lucide-react';
-import FeatureItem from './FeatureItem';
-import { motion } from 'framer-motion';
+import { motion, Variants } from "framer-motion";
+import { FeatureItem } from "./FeatureItem";
+import { Zap, ShieldCheck, Rocket } from "lucide-react";
 
-/**
- * Type definition for a single feature.
- */
-interface Feature {
-  readonly id: number;
-  readonly icon: React.ElementType;
-  readonly text: string;
-}
-
-// Data for the features list.
-// Note: "Connect Supabase for backend" is inferred from the partially visible text in the reference image.
-const featuresData: readonly Feature[] = [
+const features = [
   {
-    id: 1,
-    icon: Database,
-    text: "Connect Supabase for backend",
+    icon: Zap,
+    title: "Lightning Fast",
+    description: "Experience blazing-fast performance and instant load times with our optimized infrastructure.",
   },
   {
-    id: 2,
-    icon: CodeXml,
-    text: "Collaborate at source, via GitHub",
+    icon: ShieldCheck,
+    title: "Secure by Design",
+    description: "Your data is protected with end-to-end encryption and industry-leading security protocols.",
   },
   {
-    id: 3,
-    icon: Globe,
-    text: "Deploy when you're ready",
-  },
-  {
-    id: 4,
-    icon: Sidebar, // The icon in the image resembles a sidebar or panel.
-    text: "Chat with AI in the sidebar",
+    icon: Rocket,
+    title: "Scalable Architecture",
+    description: "Grow your application without limits. Our platform scales with you, from MVP to enterprise.",
   },
 ];
 
-/**
- * Props for the FeatureList component.
- */
-interface FeatureListProps {
-  /**
-   * Optional additional class names.
-   */
-  className?: string;
-}
-
-/**
- * Animation variants for the list container.
- * This orchestrates the staggered animation of its children.
- */
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1, // 100ms delay between each child animating in
-      delayChildren: 0.2, // Delay before starting the first child animation
-    }
-  }
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
 };
 
-/**
- * A component that renders a vertical list of features.
- * It uses the FeatureItem component to display each feature and animates
- * the list on load.
- */
-const FeatureList: React.FC<FeatureListProps> = ({ className }) => {
+export function FeatureList() {
   return (
-    // This motion.div controls the staggered animation for the FeatureItems.
     <motion.div
-      className={cn("flex flex-col items-start gap-4 py-2", className)}
+      className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
       variants={containerVariants}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true }}
     >
-      {featuresData.map((feature) => (
-        <FeatureItem key={feature.id} icon={feature.icon}>
-          {feature.text}
-        </FeatureItem>
+      {features.map((feature, index) => (
+        <FeatureItem
+          key={index}
+          icon={feature.icon}
+          title={feature.title}
+          description={feature.description}
+        />
       ))}
     </motion.div>
   );
-};
-
-export default FeatureList;
+}
